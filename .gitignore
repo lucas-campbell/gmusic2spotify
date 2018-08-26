@@ -106,11 +106,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.dmypy.json
+dmypy.json
 
 # Vim files
 *.swp
 
 # Private env vars
 scripts/envSetup
-.dmypy.json
-dmypy.json
