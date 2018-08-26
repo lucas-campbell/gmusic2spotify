@@ -1,0 +1,15 @@
+Modules
+
+login to spotify
+
+login to gmusic
+
+create_playlist: given a file of Artist names and song titles, creates a playlist in either spotify or gmusic
+
+get_playlist: Takes in a playlist name and music client, transfers that playlist into a universal file format (or list object?) of artists and song names
+
+music_transfer: main module, calls others and transfers playlists
+
+1. just use WAMP lol
+2. redirect uri is http://localhost/gmusic_to_spotify/public/index.php
+aka http://localhost/gmusic_to_spotify/
