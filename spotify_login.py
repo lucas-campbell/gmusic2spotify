@@ -1,7 +1,4 @@
-#!/usr/bin/env/python3
-#above statement is used to set the right python interpreter
-
-import sys
+import os
 import spotipy
 import spotipy.util as util
 
@@ -11,17 +8,18 @@ def login_to_spotify(username):
         
         scope = 'playlist-read-private ' \
                  'playlist-modify-private playlist-modify-public'
-        SPOTIFY_CLIENT_ID = 
-        SPOTIFY_CLIENT_SECRET = 
-        apiURL = 'https://api.spotify.com'
-        SPOTIFY_REDIRECT_URI = 'http://localhost/gmusic_to_spotify/'
+        SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
+        SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
+        #apiURL = 'https://api.spotify.com'
+        SPOTIFY_REDIRECT_URI = 'http://localhost/'
 
         #get authorization token
 
+        # should redirect to a login page for spotify
         token = util.prompt_for_user_token(
-                username=username, scope=scope, client_id=SPOTIFY_CLIENT_ID, \ 
+                username=username, scope=scope, client_id=SPOTIFY_CLIENT_ID, \
                 client_secret=SPOTIFY_CLIENT_SECRET, \
-                redirect_uri=SPOTIFY_REDIRECT_URI)
+                        redirect_uri=SPOTIFY_REDIRECT_URI)
 
         if token: #got it boii
                 print('got toekennn obi kenobi!')
