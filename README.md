@@ -4,6 +4,7 @@
 
 ## Environemt Setup
 Set up all necessary variables via env vars:
+
 |        Variable       |                   Value                  |
 |:---------------------:|:----------------------------------------:|
 | GMUSIC_USERNAME       | <your-google-music-username>             |
@@ -12,5 +13,3 @@ Set up all necessary variables via env vars:
 | SPOTIFY_CLIENT_SECRET | <your-spotify-client-secret>             |
 | SPOTIFY_REDIRECT_URI  | often just 'http://localhost/'           |
 | SPOTIFY_USERNAME      | username or email used for Spotify login |
-
-
