@@ -1,7 +1,6 @@
-# import requests
-#from gmusicapi.utils import utils
 import os
 from gmusic_login import login_to_gmusic
+from gmusicapi import Mobileclient
 
 def main():
         """A test main for getting playlist info from a \
@@ -14,7 +13,7 @@ def main():
 
         all_playlists = gmusicapi.get_all_user_playlist_contents()
         for p in all_playlists:
-                print(p.name)
+                print(p['name'])
 
 if __name__ == "__main__":
         main()
