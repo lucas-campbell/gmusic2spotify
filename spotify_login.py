@@ -10,8 +10,7 @@ def login_to_spotify(username):
                  'playlist-modify-private playlist-modify-public'
         SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
         SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
-        #apiURL = 'https://api.spotify.com'
-        SPOTIFY_REDIRECT_URI = 'http://localhost/'
+        SPOTIFY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
 
         #get authorization token
 
