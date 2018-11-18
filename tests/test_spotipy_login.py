@@ -1,7 +1,7 @@
 import os
 import spotipy
 import spotipy.util as util
-from spotify_login import *
+from spotify import *
 
 def main():
     spUsername = os.getenv('SPOTIFY_USERNAME')

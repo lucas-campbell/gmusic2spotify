@@ -22,8 +22,8 @@ def login_to_spotify(username):
             client_secret=SPOTIFY_CLIENT_SECRET, \
                     redirect_uri=SPOTIFY_REDIRECT_URI)
 
-    if token: #got it boii
-            print('got toekennn obi kenobi!')
+    if token: #received oath token
+            print('received oath token')
             spotify = spotipy.Spotify(auth=token)
             print('spotipy instantiated')
             return spotify
@@ -31,3 +31,8 @@ def login_to_spotify(username):
     else: #couldn't get oauth token
             print('Unable to retrieve authorization token ' \
                                             'for {}'.format(username))
+def conver_playlist(title):
+    """
+    param [title] the title of a playlist
+    returns a dictionary of the tracks of that playlist
+    """

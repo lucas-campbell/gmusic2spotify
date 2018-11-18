@@ -1,5 +1,5 @@
 import os
-from gmusic_login import login_to_gmusic
+from gmusic import login_to_gmusic
 from gmusicapi import Mobileclient
 
 def main():
