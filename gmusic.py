@@ -64,6 +64,7 @@ def tracksDict(pl):
             song = track(metadata['title'], metadata['artist'])
             playlist.append(song.songStr())
         else:
+            playlist.append("Error: Song not hosted on Gmusic")
             notHosted.append(t['id'])
 
     return (playlist, notHosted)
