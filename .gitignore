@@ -117,3 +117,7 @@ scripts/envSetup
 
 # Spotify cache
 .cache-*
+
+# Visual Studio Code
+.vscode/
+
