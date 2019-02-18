@@ -56,24 +56,25 @@ def login_to_gmusic_webclient(username, password):
 def convert_playlist(title, gapi):
     """
     param [title] the title of a playlist
+    param [gapi] an authenticated gmusic api object
     returns a dictionary of the tracks of that playlist
     """
     if not (gapi.is_authenticated):
-        sys.stderr,write('Error: api not authenticated')
+        sys.stderr.write('Error: api not authenticated')
         return None
     allPLs = gapi.get_all_user_playlist_contents()
 
     wanted = next((p for p in allPLs if p['name'] == title), None)
     if wanted == None: 
-        sys.stderr,write('Error: could not find desired playlist')
+        sys.stderr.write('Error: could not find desired playlist')
         return None
-    return tracksDict(wanted)
+    return tracksDict(wanted) # convert found pl into tracksDict format
 
 def tracksDict(pl):
     """
     takes in a google music playlist dictionary, which contains the field
     'tracks'; itself a list of "properly ordered playlist entry dicts".
-    Returns a list of track_type objects, in the order they appear in the
+    Returns a list of track objects, in the order they appear in the
     given playlist. Returned list may be incomplete if not all tracks are
     hosted in GMusic (and thus metadata cannot be accessed via gmusic api),
     in which case a list of those trackIDs will be returned as well.
@@ -83,7 +84,8 @@ def tracksDict(pl):
     for t in pl['tracks']:
         metadata = t.get('track', None)
         if metadata != None:
-            song = track(metadata['title'], metadata['artist'])
+            song = track(metadata['title'], metadata['artist']) # create track
+                                                                # object
             playlist.append(song.songStr())
         else:
             playlist.append("Error: Song not hosted on Gmusic")
