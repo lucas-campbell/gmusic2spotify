@@ -2,7 +2,7 @@
 
 ## Usage
 
-## Environemt Setup
+## Environment Setup
 Set up all necessary variables via env vars:
 
 |        Variable       |                   Value                  |

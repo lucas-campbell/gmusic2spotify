@@ -4,14 +4,36 @@ import sys
 from gmusicapi import Mobileclient
 from track import track
 
+def onetime_perform_oauth(path, open_browser=False):
+    """
+    params: path to store oauth credentials, after a call to this you should
+    only need to call api.oauth_login()
+    returns authenticated api
+    """
+    api = Mobileclient()
+    #f = open(path, "w")
+    api.perform_oauth(path, open_browser)
+
+    #api.perform_oauth(f, open_browser)
+    return api
+    
+def login_to_gmusic_with_oauth():
+    api = Mobileclient()
+    if api.oauth_login(api.FROM_MAC_ADDRESS, \
+            oauth_credentials=u'/home/lucas/.local/share/gmusicapimobileclient.cred', locale=u'es_ES'):
+        return api
+    else:
+        sys.stderr.write('error logging in, exiting program')
+        sys.exit()
 def login_to_gmusic(username, password):
     """
     params: username & password for your gmusic account
     returns the authenticated gmusic api object
     """
     api = Mobileclient()
-    api.login(email=username, password=password, \
-              android_id=api.FROM_MAC_ADDRESS, locale='en_US')
+    #api.oath_login(
+#    api.login(email=username, password=password, \
+#              android_id=api.FROM_MAC_ADDRESS, locale=u'es_ES')
     if api.is_authenticated():
             print('Logged in to Google Music')
             return api
