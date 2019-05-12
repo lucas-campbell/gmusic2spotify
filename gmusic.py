@@ -78,7 +78,43 @@ def tracksDict(pl):
                                                                 # object
             playlist.append(song.songStr())
         else:
-            playlist.append("Error: Song not hosted on Gmusic")
+            playlist.append("Error: Song metadata not accessible")
             notHosted.append(t['id'])
 
     return (playlist, notHosted)
+
+def add_tracks_to_lib(title, gapi):
+    """
+    takes in a playlist title and an authenticated gmusic api object. With
+    This, extracts a google music playlist dictionary, which contains the field
+    'tracks'; itself a list of "properly ordered playlist entry dicts".
+    Adds those tracks with a valid storeID to your Google Music Library.
+    """
+    #Extract single playlist
+    if not (gapi.is_authenticated):
+        sys.stderr.write('Error: api not authenticated')
+        return None
+    allPLs = gapi.get_all_user_playlist_contents()
+
+    pl= next((p for p in allPLs if p['name'] == title), None)
+    if pl == None:
+        sys.stderr.write('Error: could not find desired playlist')
+        return None
+    #add playlist's tracks to library
+    #to_add = []
+    added = 0
+    bad_data = 0
+    for t in pl['tracks']:
+        metadata = t.get('track', None)
+        if metadata != None:
+            #to_add.append(metadata['storeId'])
+            gapi.add_store_track(metadata['storeId'])
+            added = added + 1
+        else:
+            bad_data = bad_data + 1
+    #Gmusicapi call
+    #gapi.add_store_tracks(to_add)
+    #print("Added ", len(to_add), " tracks to library.\n")
+    print("Added ", added, " tracks to library.\n")
+    print("Unable to add ", bad_data, " tracks.\n")
+
