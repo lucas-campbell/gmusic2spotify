@@ -1,6 +1,15 @@
 # gmusic2spotify
 
 ## Usage
+1. make sure to
+```
+pip install gmusicapi
+```
+(can use virtualenv or pipenv for this, see:
+ https://docs.python-guide.org/dev/virtualenvs/)
+
+
+
 
 ## Environment Setup
 Set up all necessary variables via env vars:
