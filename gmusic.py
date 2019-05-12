@@ -1,6 +1,7 @@
 # GMusic_modules.py -- interactions with gmusicapi
 
 import sys
+import os
 from gmusicapi import Mobileclient
 from track import track
 
@@ -11,20 +12,21 @@ def onetime_perform_oauth(path, open_browser=False):
     returns authenticated api
     """
     api = Mobileclient()
-    #f = open(path, "w")
     api.perform_oauth(path, open_browser)
+    print('\n\nOK\n\n')
 
-    #api.perform_oauth(f, open_browser)
     return api
-    
+
 def login_to_gmusic_with_oauth():
     api = Mobileclient()
+    creds = os.getenv('OAUTH_CREDS_PATH')
     if api.oauth_login(api.FROM_MAC_ADDRESS, \
-            oauth_credentials=u'/home/lucas/.local/share/gmusicapimobileclient.cred', locale=u'es_ES'):
+            oauth_credentials=creds, locale=u'es_ES'):
         return api
     else:
         sys.stderr.write('error logging in, exiting program')
         sys.exit()
+
 def login_to_gmusic(username, password):
     """
     params: username & password for your gmusic account
@@ -36,18 +38,6 @@ def login_to_gmusic(username, password):
 #              android_id=api.FROM_MAC_ADDRESS, locale=u'es_ES')
     if api.is_authenticated():
             print('Logged in to Google Music')
-            return api
-    else:
-            sys.stderr.write('error logging in, exiting program')
-            sys.exit()
-
-def login_to_gmusic_webclient(username, password):
-    """ params: obvious
-    returns the gmusic Webclient api object that has been authenticated """
-    
-    api = Webclient()
-    if api.login(email=username, password=password):
-            print('aye')
             return api
     else:
             sys.stderr.write('error logging in, exiting program')
@@ -65,7 +55,7 @@ def convert_playlist(title, gapi):
     allPLs = gapi.get_all_user_playlist_contents()
 
     wanted = next((p for p in allPLs if p['name'] == title), None)
-    if wanted == None: 
+    if wanted == None:
         sys.stderr.write('Error: could not find desired playlist')
         return None
     return tracksDict(wanted) # convert found pl into tracksDict format

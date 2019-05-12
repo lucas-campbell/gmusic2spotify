@@ -4,15 +4,19 @@ sys.path.append('../')
 import os
 import gmusic
 
-def setup():
-    u = os.getenv('GMUSIC_USERNAME')
-    pw = os.getenv('GMUSIC_PW')
-    return (u, pw)
+#def setup0():
+#    u = os.getenv('GMUSIC_USERNAME')
+#    pw = os.getenv('GMUSIC_PW')
+#    return (u, pw)
 
-(u, pw) = setup()
+def setup1():
+    return os.getenv('OAUTH_CREDS_PATH')
 
-#secret_path = '/home/lucas/.local/share/gmusicapimobileclient.cred'
-#gm_api = gmusic.onetime_perform_oauth(secret_path, open_browser=True)
+
+#(u, pw) = setup()
+secret_path = setup1()
+
+#gm_api = gmusic.onetime_perform_oauth(secret_path)
 #gm_api = gmusic.login_to_gmusic(u, pw)
 gm_api = gmusic.login_to_gmusic_with_oauth()
 
