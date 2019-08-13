@@ -1,8 +1,9 @@
 # gmusic2spotify
 
 ## Current State
-Unable to move forward because much of the time google music will not show
-metadata for a track, even when it should. 12/5/2019
+12/5/2019
+Unable to move forward because of apparent inconsistencies in Google Music's
+underlying representation of a track
 
 ## Usage
 1. make sure to
@@ -11,9 +12,6 @@ pip install gmusicapi
 ```
 (can use virtualenv or pipenv for this, see:
  https://docs.python-guide.org/dev/virtualenvs/)
-
-
-
 
 ## Environment Setup
 Set up all necessary variables via env vars:
@@ -26,14 +24,15 @@ Set up all necessary variables via env vars:
 | SPOTIFY_CLIENT_SECRET | \<your-spotify-client-secret\>           |
 | SPOTIFY_REDIRECT_URI  | often just 'http://localhost/'           |
 | SPOTIFY_USERNAME      | username or email used for Spotify login |
-| OAUTH_CREDS_PATH      | wherever you want to store oauth token   |
+| OAUTH_CREDS_PATH      | desired path to oauth token              |
+
 I use a simple script to set these values, aka a lot of
  ```
  export GMUSIC_USERNAME='xxxxx'
 ```
 
 ## Running Tests
-**Only need to run once**
+**Only need to run once**<br/>
 Gets/stores oauth credentials in path indicated by OAUTH_CREDS_PATH
 ```
 python3 tests/runonce.py
@@ -42,3 +41,18 @@ python3 tests/runonce.py
 ```
 python3 tests/test.py
 ```
+
+## Current Design (rough thoughts)
+Modules
+
+login to spotify
+
+login to gmusic
+
+create_playlist: given a list of track objects, and a music service, creates a
+playlist in either spotify or gmusic
+
+get_playlist: Takes in a playlist name and music client, transfers that
+playlist into a list of track objects
+
+music_transfer: main module, calls others and transfers playlists
