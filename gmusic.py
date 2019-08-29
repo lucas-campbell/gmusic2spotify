@@ -21,7 +21,7 @@ def login_to_gmusic_with_oauth():
     api = Mobileclient()
     creds = os.getenv('OAUTH_CREDS_PATH')
     if api.oauth_login(api.FROM_MAC_ADDRESS, \
-            oauth_credentials=creds, locale=u'es_ES'):
+            oauth_credentials=creds, locale=u'en_US'):
         return api
     else:
         sys.stderr.write('error logging in, exiting program')
@@ -74,11 +74,11 @@ def tracksDict(pl):
     for t in pl['tracks']:
         metadata = t.get('track', None)
         if metadata != None:
-            song = track(metadata['title'], metadata['artist']) # create track
-                                                                # object
-            playlist.append(song.songStr())
+            # create track object, add to 'playlist'
+            song = track(title=metadata['title'], artist=metadata['artist']) 
+            playlist.append(song)
         else:
-            playlist.append("Error: Song metadata not accessible")
+            playlist.append(track(title="Error: Song metadata not accessible"))
             notHosted.append(t['id'])
 
     return (playlist, notHosted)
@@ -90,7 +90,7 @@ def add_tracks_to_lib(title, gapi):
     'tracks'; itself a list of "properly ordered playlist entry dicts".
     Adds those tracks with a valid storeID to your Google Music Library.
     """
-    #Extract single playlist
+    # Extract single playlist
     if not (gapi.is_authenticated):
         sys.stderr.write('Error: api not authenticated')
         return None
@@ -100,21 +100,30 @@ def add_tracks_to_lib(title, gapi):
     if pl == None:
         sys.stderr.write('Error: could not find desired playlist')
         return None
-    #add playlist's tracks to library
-    #to_add = []
+    # add playlist's tracks to library
+    # to_add = []
     added = 0
     bad_data = 0
     for t in pl['tracks']:
         metadata = t.get('track', None)
         if metadata != None:
             #to_add.append(metadata['storeId'])
-            gapi.add_store_track(metadata['storeId'])
+            gapi.add_store_tracks([metadata['storeId']])
             added = added + 1
         else:
             bad_data = bad_data + 1
-    #Gmusicapi call
+    # Gmusicapi call
     #gapi.add_store_tracks(to_add)
     #print("Added ", len(to_add), " tracks to library.\n")
     print("Added ", added, " tracks to library.\n")
     print("Unable to add ", bad_data, " tracks.\n")
 
+def print_tracks(td, _sep=' '):
+    """
+    Prints the elements of 'td', a list of track objects, in string format, to
+    screen with the separating character 'sep'.
+    """
+    track_strings = []
+    for t in td:
+        track_strings.append(t.songStr())
+    print(*track_strings, sep=_sep)
