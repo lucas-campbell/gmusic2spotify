@@ -12,13 +12,12 @@ def get_u_pw():
 def main():
 
     (u, pw) = get_u_pw()
-    
-    #gm_api = gmusic.login_to_gmusic(u, pw)
+
     gm_api = gmusic.login_to_gmusic_with_oauth()
 
-    (tracks, bad) = gmusic.convert_playlist("Plush", gm_api)
+    p = gmusic.convert_playlist("Plush", gm_api)
 
-    gmusic.print_tracks(tracks)
+    print(p)
 
 if __name__ == "__main__":
     main()
