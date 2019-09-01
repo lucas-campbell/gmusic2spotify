@@ -13,7 +13,7 @@ def onetime_perform_oauth(path, open_browser=False):
     """
     api = Mobileclient()
     api.perform_oauth(path, open_browser)
-    print('\n\nOK\n\n')
+    print('\n\nOK, OAuth credentials stored at: ', path, '\n\n')
 
     return api
 
@@ -29,13 +29,13 @@ def login_to_gmusic_with_oauth():
 
 def login_to_gmusic(username, password):
     """
+    DEPRECATED, use login_to_gmusic_with_oauth() instead
     params: username & password for your gmusic account
     returns the authenticated gmusic api object
     """
     api = Mobileclient()
-    #api.oath_login(
-#    api.login(email=username, password=password, \
-#              android_id=api.FROM_MAC_ADDRESS, locale=u'es_ES')
+    api.login(email=username, password=password, \
+              android_id=api.FROM_MAC_ADDRESS, locale=u'es_ES')
     if api.is_authenticated():
             print('Logged in to Google Music')
             return api
@@ -121,7 +121,7 @@ def add_tracks_to_lib(title, gapi):
 def print_tracks(td, _sep=' '):
     """
     Prints the elements of 'td', a list of track objects, in string format, to
-    screen with the separating character 'sep'.
+    screen with the separating character '_sep'.
     """
     track_strings = []
     for t in td:
