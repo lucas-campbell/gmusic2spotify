@@ -3,6 +3,7 @@
 import sys
 import os
 from gmusicapi import Mobileclient
+import oauth2client # exception handling purposes
 from track import track
 
 def onetime_perform_oauth(path, open_browser=False):
@@ -12,16 +13,20 @@ def onetime_perform_oauth(path, open_browser=False):
     returns authenticated api
     """
     api = Mobileclient()
-    api.perform_oauth(path, open_browser)
-    print('\n\nOK, OAuth credentials stored at: ', path, '\n\n')
-
-    return api
+    try:
+        api.perform_oauth(path, open_browser)
+    except oauth2client.client.FlowExchangeError:
+        print('\nError obtaining OAuth credentials, aborting\n',
+                file=sys.stderr)
+    else:
+        print('\n\nOK, OAuth credentials stored at: ', path, '\n\n')
+        return api # authenticated?
 
 def login_to_gmusic_with_oauth():
     api = Mobileclient()
     creds = os.getenv('OAUTH_CREDS_PATH')
-    if api.oauth_login(api.FROM_MAC_ADDRESS, \
-            oauth_credentials=creds, locale=u'en_US'):
+    device_id = os.getenv('ANDROID_ID')
+    if api.oauth_login(device_id, oauth_credentials=creds, locale=u'en_US'):
         return api
     else:
         sys.stderr.write('error logging in, exiting program')

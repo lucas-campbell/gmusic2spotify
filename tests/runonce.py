@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #quickfix for tests
 import sys
 sys.path.append('../')
@@ -9,4 +10,3 @@ def find_oauth_creds():
 
 secret_path = find_oauth_creds()
 gm_api = gmusic.onetime_perform_oauth(secret_path)
-

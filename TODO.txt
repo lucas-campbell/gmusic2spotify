@@ -1,0 +1,11 @@
+current state:
+    add_tracks_to_lib not working becasue of a weird json response error. Not
+    worth worrying about?
+Next:
+    1. attempt to build a list of track objects from playlist, make sure that has
+        the same length as the storeIds list. 
+    2. from a list of Track objects, create corresponding spotify playlist:
+        a. for each track object, do custom search & for now just add to PL if
+            there exists an exact match.
+        b. Log success & failure (num tracks succeeded, name of tracks that
+            didnt)

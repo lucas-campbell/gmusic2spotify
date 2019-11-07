@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 sys.path.append('../')
 import os
@@ -27,7 +28,7 @@ for t in allPt1['tracks']:
     else:
         storeIdsToAdd.append(t['track']['storeId'])
 print(len(storeIdsToAdd))
-print(*storeIdsToAdd)
+#print(*storeIdsToAdd)
 # gmusic.add_tracks_to_lib(title2, gm_api)
-#new_lib_ids = gm_api.add_store_tracks(storeIdsToAdd)
-#print(len(new_lib_ids))
+new_lib_ids = gm_api.add_store_tracks(storeIdsToAdd)
+print(len(new_lib_ids))
