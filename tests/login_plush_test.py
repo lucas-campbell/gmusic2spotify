@@ -20,11 +20,13 @@ def main():
         if t['source'] == '1':
             badtrackID = t['trackId']
             song = next(t for t in all_song_meta_data if t['id'] == badtrackID)
-            print(song['title'])
+            print(song)
+            break
         else:
             print(t['track']['title'])
         count += 1
     print(count)
+    print(plush['tracks'][0])
         
 #    print (sources.count('1'))
 #    print (errors)
