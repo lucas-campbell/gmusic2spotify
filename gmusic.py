@@ -92,12 +92,12 @@ def tracksDict(pl, gm_api):
         # Check source:
         # '2' indicates hosted on Google Music, '1' otherwise
         if t['source'] == '2':
-            song = Track.Track(title=metadata['title'],
-                              artist=metadata['artist']) 
+            song = Track.Track(title=t['track']['title'],
+                               artist=t['track']['artist']) 
             playlist.append(song)
         elif track['source'] == '1':
-            # unfortunate API inconsistency: playlistEntry object 'trackId' 
-            # corresponds w/ track object 'id'
+            # Important: when source is '1', playlistEntry object's 'trackId' 
+            # will correspond w/ a track object's 'id' in all_song_meta_data
             badtrackID = track['trackId']
             song = next((t for t in all_song_meta_data \
                             if t['id'] == badtrackID), None)

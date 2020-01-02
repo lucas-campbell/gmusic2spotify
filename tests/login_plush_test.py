@@ -22,6 +22,7 @@ def main():
         if t['source'] == '1':
             badtrackID = t['trackId']
             song = next(t for t in all_song_meta_data if t['id'] == badtrackID)
+            song_str = song['title']
             print(song)
             break
         else: # t['source'] == '2'

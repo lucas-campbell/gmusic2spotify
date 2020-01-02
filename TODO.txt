@@ -9,3 +9,14 @@ Next:
             there exists an exact match.
         b. Log success & failure (num tracks succeeded, name of tracks that
             didnt)
+
+Future:
+    1. Have multiple Track object constructor options: one for each music
+    service API so can make a call like 
+    'song = Track.Track(track_dict, service= gm)'
+    plus a generic one where can fill in parameters manually, e.g.
+    'song = Track.Track(title='Love is All', Artist="The Tallest Man on Earth,
+            ms=123456, Album='etc etc....)
+    for cleaner code. Also expands the Track object fields so that can create
+    algo to compare search results and put importance on one parameter or
+    another  (e.g. Artist+Title > album > milliseconds > genre, etc).
