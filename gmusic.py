@@ -9,25 +9,25 @@ import Track
 def onetime_perform_oauth(path, open_browser=False):
     """
     params: path to store oauth credentials, after a call to this you should
-    only need to call api.oauth_login()
+    only need to call gm_api.oauth_login()
     returns authenticated api
     """
-    api = Mobileclient()
+    gm_api = Mobileclient()
     try:
-        api.perform_oauth(path, open_browser)
+        gm_api.perform_oauth(path, open_browser)
     except oauth2client.client.FlowExchangeError:
         print('\nError obtaining OAuth credentials, aborting\n',
                 file=sys.stderr)
     else:
         print('\n\nOK, OAuth credentials stored at: ', path, '\n\n')
-        return api # authenticated?
+        return gm_api # not authenticated yet!
 
 def login_to_gmusic_with_oauth():
-    api = Mobileclient()
+    gm_api = Mobileclient()
     creds = os.getenv('OAUTH_CREDS_PATH')
     device_id = os.getenv('ANDROID_ID')
-    if api.oauth_login(device_id, oauth_credentials=creds, locale=u'en_US'):
-        return api
+    if gm_api.oauth_login(device_id, oauth_credentials=creds, locale=u'en_US'):
+        return gm_api
     else:
         sys.stderr.write('error logging in, exiting program')
         sys.exit()
@@ -38,26 +38,28 @@ def login_to_gmusic(username, password):
     params: username & password for your gmusic account
     returns the authenticated gmusic api object
     """
-    api = Mobileclient()
-    api.login(email=username, password=password, \
-              android_id=api.FROM_MAC_ADDRESS, locale=u'es_ES')
-    if api.is_authenticated():
+    gm_api = Mobileclient()
+    gm_api.login(email=username, password=password, \
+              android_id=gm_api.FROM_MAC_ADDRESS, locale=u'es_ES')
+    if gm_api.is_authenticated():
             print('Logged in to Google Music')
-            return api
+            return gm_api
     else:
             sys.stderr.write('error logging in, exiting program')
             sys.exit()
 
-def convert_playlist(title, gapi):
+def convert_playlist(title, gm_api):
     """
-    param [title] the title of a playlist
-    param [gapi] an authenticated gmusic api object
-    returns a dictionary of the tracks of that playlist
+    Params:
+        title: the title of a playlist
+        gm_api: an authenticated gmusic api object
+    Returns:
+        A dictionary of the tracks of that playlist
     """
-    if not (gapi.is_authenticated):
+    if not (gm_api.is_authenticated):
         sys.stderr.write('Error: api not authenticated')
         return None
-    allPLs = gapi.get_all_user_playlist_contents()
+    allPLs = gm_api.get_all_user_playlist_contents()
 
     wanted = next((p for p in allPLs if p['name'] == title), None)
     if wanted == None:
@@ -75,13 +77,12 @@ def tracksDict(pl, gm_api):
         pl: google music playlist dict
         gm_api: authenticated Mobileclient object
 
-    Returns:
-        A list of track objects, in the order they appear in the
-    given playlist. Returned list may be incomplete if not all tracks are
-    hosted on GMusic (and thus metadata cannot be accessed via gmusic api),
-    in which case a list of those trackIDs will be returned as well.
+    Returns: 
+        playlist: A list of Track objects, in the order they appear in the
+                  given playlist. Returned list may be incomplete if not all
+                  tracks are hosted on GMusic.
+        notFound: A list of trackIDs foor which metadata could not be found.
     """
-    # new list of Track objects
     playlist = []
     notFound = []
     # song metadata used as cross-check reference if a playlist entry doesn't
@@ -118,7 +119,7 @@ def tracksDict(pl, gm_api):
 
     return playlist, notFound
 
-def add_tracks_to_lib(title, gapi):
+def add_tracks_to_lib(title, gm_api):
     """
     Takes in a playlist title and an authenticated gmusic api object. With
     this, extracts a google music playlist dictionary, which contains the field
@@ -126,10 +127,10 @@ def add_tracks_to_lib(title, gapi):
     Adds those tracks with a valid storeID to your Google Music Library.
     """
     # Extract single playlist
-    if not (gapi.is_authenticated):
+    if not (gm_api.is_authenticated):
         sys.stderr.write('Error: api not authenticated')
         return None
-    allPLs = gapi.get_all_user_playlist_contents()
+    allPLs = gm_api.get_all_user_playlist_contents()
 
     pl= next((p for p in allPLs if p['name'] == title), None)
     if pl == None:
@@ -143,12 +144,12 @@ def add_tracks_to_lib(title, gapi):
         metadata = t.get('track', None)
         if metadata != None:
             #to_add.append(metadata['storeId'])
-            gapi.add_store_tracks([metadata['storeId']])
+            gm_api.add_store_tracks([metadata['storeId']])
             num_added += 1
         else:
             num_bad_data += 1
     # Gmusicapi call
-    #gapi.add_store_tracks(to_add)
+    #gm_api.add_store_tracks(to_add)
     #print("Added ", len(to_add), " tracks to library.\n")
     print("Added ", num_added, " tracks to library.\n")
     print("Unable to add ", num_bad_data, " tracks.\n")
