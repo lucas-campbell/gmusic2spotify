@@ -31,7 +31,7 @@ def login_to_spotify(username):
     else: #couldn't get oauth token
             print('Unable to retrieve authorization token ' \
                                             'for {}'.format(username))
-def conver_playlist(title):
+def convert_playlist(title):
     """
     param [title] the title of a playlist
     returns a dictionary of the tracks of that playlist

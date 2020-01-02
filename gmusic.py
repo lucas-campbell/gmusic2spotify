@@ -4,7 +4,7 @@ import sys
 import os
 from gmusicapi import Mobileclient
 import oauth2client # exception handling purposes
-from track import track
+import Track
 
 def onetime_perform_oauth(path, open_browser=False):
     """
@@ -65,33 +65,63 @@ def convert_playlist(title, gapi):
         return None
     return tracksDict(wanted) # convert found pl into tracksDict format
 
-def tracksDict(pl):
+def tracksDict(pl, gm_api):
     """
-    takes in a google music playlist dictionary, which contains the field
+    Takes in a google music playlist dictionary and an authenticated
+    MobileClient api. The playlist dictionary contains the field
     'tracks'; itself a list of "properly ordered playlist entry dicts".
-    Returns a list of track objects, in the order they appear in the
+
+    Params:
+        pl: google music playlist dict
+        gm_api: authenticated Mobileclient object
+
+    Returns:
+        A list of track objects, in the order they appear in the
     given playlist. Returned list may be incomplete if not all tracks are
-    hosted in GMusic (and thus metadata cannot be accessed via gmusic api),
+    hosted on GMusic (and thus metadata cannot be accessed via gmusic api),
     in which case a list of those trackIDs will be returned as well.
     """
+    # new list of Track objects
     playlist = []
-    notHosted = []
-    for t in pl['tracks']:
-        metadata = t.get('track', None)
-        if metadata != None:
-            # create track object, add to 'playlist'
-            song = track(title=metadata['title'], artist=metadata['artist']) 
+    notFound = []
+    # song metadata used as cross-check reference if a playlist entry doesn't
+    # have desired metadata
+    all_song_meta_data = gm_api.get_all_songs()
+    for track in pl['tracks']:
+        # Check source:
+        # '2' indicates hosted on Google Music, '1' otherwise
+        if t['source'] == '2':
+            song = Track.Track(title=metadata['title'],
+                              artist=metadata['artist']) 
             playlist.append(song)
+        elif track['source'] == '1':
+            # unfortunate API inconsistency: playlistEntry object 'trackId' 
+            # corresponds w/ track object 'id'
+            badtrackID = track['trackId']
+            song = next((t for t in all_song_meta_data \
+                            if t['id'] == badtrackID), None)
+            if song != None:
+                # create track object, add to new "playlist"
+                track_obj = Track.Track(title=song['title'],
+                                        artist=song['artist']) 
+                playlist.append(track_obj)
+            else:
+                msg = "Error with track " + str(badtrackID) + ": 'source'"
+                      " field is '1', but could not find matching metadata."
+                print(msg, file=sys.stderr)
+                notFound.append(badtrackID)
         else:
-            playlist.append(track(title="Error: Song metadata not accessible"))
-            notHosted.append(t['id'])
+            msg = "Error with track " + str(track['trackId']) + ": 'source'"
+                  " field not '1' or '2'."
+            print(msg, file=sys.stderr)
+            notFound.append(track['trackId'])
 
-    return (playlist, notHosted)
+    return playlist, notFound
 
 def add_tracks_to_lib(title, gapi):
     """
-    takes in a playlist title and an authenticated gmusic api object. With
-    This, extracts a google music playlist dictionary, which contains the field
+    Takes in a playlist title and an authenticated gmusic api object. With
+    this, extracts a google music playlist dictionary, which contains the field
     'tracks'; itself a list of "properly ordered playlist entry dicts".
     Adds those tracks with a valid storeID to your Google Music Library.
     """
@@ -107,21 +137,21 @@ def add_tracks_to_lib(title, gapi):
         return None
     # add playlist's tracks to library
     # to_add = []
-    added = 0
-    bad_data = 0
+    num_added = 0
+    num_bad_data = 0
     for t in pl['tracks']:
         metadata = t.get('track', None)
         if metadata != None:
             #to_add.append(metadata['storeId'])
             gapi.add_store_tracks([metadata['storeId']])
-            added = added + 1
+            num_added += 1
         else:
-            bad_data = bad_data + 1
+            num_bad_data += 1
     # Gmusicapi call
     #gapi.add_store_tracks(to_add)
     #print("Added ", len(to_add), " tracks to library.\n")
-    print("Added ", added, " tracks to library.\n")
-    print("Unable to add ", bad_data, " tracks.\n")
+    print("Added ", num_added, " tracks to library.\n")
+    print("Unable to add ", num_bad_data, " tracks.\n")
 
 def print_tracks(td, _sep=' '):
     """

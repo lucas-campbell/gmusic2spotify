@@ -11,18 +11,20 @@ def main():
     # Get a MobileClient api
     gm_api = gmusic.login_to_gmusic_with_oauth()
     all_songs = gm_api.get_all_user_playlist_contents()
-    plush = next((p for p in all_songs if p['name'] == 'Jiggy'), None)
+    plush = next((p for p in all_songs if p['name'] == 'Plush'), None)
     all_song_meta_data = gm_api.get_all_songs()
 
     badtrackID = ''
     count  = 0
     for t in plush['tracks']:
+        # Check for bad source.
+        # '2' indicates hosted on Google Music, '1' otherwise
         if t['source'] == '1':
             badtrackID = t['trackId']
             song = next(t for t in all_song_meta_data if t['id'] == badtrackID)
             print(song)
             break
-        else:
+        else: # t['source'] == '2'
             print(t['track']['title'])
         count += 1
     print(count)
