@@ -65,7 +65,7 @@ def convert_playlist(title, gm_api):
     if wanted == None:
         sys.stderr.write('Error: could not find desired playlist')
         return None
-    return tracksDict(wanted) # convert found pl into tracksDict format
+    return tracksDict(wanted, gm_api) # convert found pl into tracksDict format
 
 def tracksDict(pl, gm_api):
     """
@@ -88,17 +88,17 @@ def tracksDict(pl, gm_api):
     # song metadata used as cross-check reference if a playlist entry doesn't
     # have desired metadata
     all_song_meta_data = gm_api.get_all_songs()
-    for track in pl['tracks']:
+    for t in pl['tracks']:
         # Check source:
         # '2' indicates hosted on Google Music, '1' otherwise
         if t['source'] == '2':
             song = Track.Track(title=t['track']['title'],
                                artist=t['track']['artist']) 
             playlist.append(song)
-        elif track['source'] == '1':
+        elif t['source'] == '1':
             # Important: when source is '1', playlistEntry object's 'trackId' 
             # will correspond w/ a track object's 'id' in all_song_meta_data
-            badtrackID = track['trackId']
+            badtrackID = t['trackId']
             song = next((t for t in all_song_meta_data \
                             if t['id'] == badtrackID), None)
             if song != None:
@@ -107,15 +107,15 @@ def tracksDict(pl, gm_api):
                                         artist=song['artist']) 
                 playlist.append(track_obj)
             else:
-                msg = "Error with track " + str(badtrackID) + ": 'source'"
+                msg = "Error with track " + str(badtrackID) + ": 'source'" + \
                       " field is '1', but could not find matching metadata."
                 print(msg, file=sys.stderr)
                 notFound.append(badtrackID)
         else:
-            msg = "Error with track " + str(track['trackId']) + ": 'source'"
+            msg = "Error with track " + str(t['trackId']) + ": 'source'" + \
                   " field not '1' or '2'."
             print(msg, file=sys.stderr)
-            notFound.append(track['trackId'])
+            notFound.append(t['trackId'])
 
     return playlist, notFound
 
