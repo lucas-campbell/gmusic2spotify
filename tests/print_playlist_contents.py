@@ -4,19 +4,21 @@ sys.path.append('../')
 import os
 import gmusic
 
-def main():
+def main(argv):
 
-    #(u, pw) = get_u_pw()
+    if len(sys.argv) != 2:
+        sys.stderr.write("Error: please supply the name of a playlist\n")
+        exit(-1)
 
     # Get a MobileClient api
     gm_api = gmusic.login_to_gmusic_with_oauth()
     all_songs = gm_api.get_all_user_playlist_contents()
-    plush = next((p for p in all_songs if p['name'] == 'Plush'), None)
+    pl = next((p for p in all_songs if p['name'] == argv[1]), None)
     all_song_meta_data = gm_api.get_all_songs()
 
     badtrackID = ''
     count  = 0
-    for t in plush['tracks']:
+    for t in pl['tracks']:
         # Check for bad source.
         # '2' indicates hosted on Google Music, '1' otherwise
         if t['source'] == '1':
@@ -30,7 +32,7 @@ def main():
         count += 1
     print("")
     print(count)
-    #print(plush['tracks'][0])
+    #print(pl['tracks'][0])
         
 #    print (sources.count('1'))
 #    print (errors)
@@ -40,4 +42,4 @@ def main():
     #print(p)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)

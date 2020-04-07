@@ -36,13 +36,29 @@ I use a simple script to set these values, aka a lot of
  export GMUSIC_USERNAME='xxxxx'
 ```
 
-## Running Tests
-**Only need to run once**<br/>
-Gets/stores oauth credentials in path indicated by OAUTH_CREDS_PATH
+## Tests
+### Google Music
+**Run this once, then can use other tests **<br/>
+Gets/stores oauth credentials in path indicated by environment variable 
+OAUTH_CREDS_PATH:
 ```
-python3 tests/runonce.py
+source scripts/envSetup.sh
+cd tests/
+python3 runonce.py
 ```
 
+Infinite loop that waits for the name of a playlist on the command line and
+checks that the playlist is available to the API. Useful for quick testing of
+API access.
 ```
-python3 tests/test.py
+source scripts/envSetup.sh
+cd tests/
+python3 test_get_gmusic_playlist.py
+```
+
+Prints contents (titles + number of songs) to command line.
+```
+source scripts/envSetup.sh
+cd tests/
+python3 print_playlist_contents.py <Title of playlist>
 ```
