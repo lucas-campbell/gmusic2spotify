@@ -20,3 +20,12 @@ Future:
     for cleaner code. Also expands the Track object fields so that can create
     algo to compare search results and put importance on one parameter or
     another  (e.g. Artist+Title > album > milliseconds > genre, etc).
+
+    2. For faster process, can catch exception 'gmusicapi.exceptions.InvalidDeviceId'
+        in gmusic.login_to_gmusic_with_oauth and get the first device id returned
+        from there (not that much faster bc have to store oauth creds for each account,
+        but it store separate oauth creds and access them each individually could
+        streamline the process).
+    3. Just make a bash script that take args for playlists as cmd line args or
+    lines of a file or smth and does all this instead of having to run a playlist
+    transfer script once for each playlist

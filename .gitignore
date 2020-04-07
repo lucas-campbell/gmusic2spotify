@@ -116,6 +116,7 @@ dmypy.json
 *~
 
 # Private env vars
+scripts/envSetup.sh
 scripts/envSetup
 
 # Spotify cache

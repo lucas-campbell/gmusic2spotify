@@ -11,7 +11,7 @@ def main():
     # Get a MobileClient api
     gm_api = gmusic.login_to_gmusic_with_oauth()
     all_songs = gm_api.get_all_user_playlist_contents()
-    plush = next((p for p in all_songs if p['name'] == 'Plush'), None)
+    plush = next((p for p in all_songs if p['name'] == 'Moby'), None)
     all_song_meta_data = gm_api.get_all_songs()
 
     badtrackID = ''
