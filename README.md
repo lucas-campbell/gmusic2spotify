@@ -6,17 +6,13 @@ Unable to move forward because of apparent inconsistencies in Google Music's
 underlying representation of a track
 
 ## Usage
-1. make sure to
+Make sure to install gmusic & spotify apis for python:
 ```
-pip install gmusicapi
+python3 -m pip install -r requirements.txt
 ```
 (can use virtualenv or pipenv for this, see:
  https://docs.python-guide.org/dev/virtualenvs/)
 
-2. Install gmusic api library for python
-```
-python3 -m pip install gmusicapi
-```
 
 ## Environment Setup
 Set up all necessary variables via env vars:
@@ -31,9 +27,16 @@ Set up all necessary variables via env vars:
 | SPOTIFY_USERNAME      | username or email used for Spotify login |
 | OAUTH_CREDS_PATH      | desired path to oauth token              |
 
-I use a simple script to set these values, aka a lot of
+I use a simple script to set these values, aka one .sh file with a lot of
  ```
  export GMUSIC_USERNAME='xxxxx'
+```
+So the whole setup process is:
+```
+python3 -m venv VENV
+source VENV/bin/activate
+python3 -m pip install -r requirements.txt
+source scripts/envSetup.sh
 ```
 
 ## Tests
