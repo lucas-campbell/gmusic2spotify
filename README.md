@@ -17,15 +17,15 @@ python3 -m pip install -r requirements.txt
 ## Environment Setup
 Set up all necessary variables via env vars:
 
-|        Variable       |                   Value                  |
-|:---------------------:|:----------------------------------------:|
-| GMUSIC_USERNAME       | \<your-google-music-username\>           |
-| GMUSIC_PW             | \<your-google-music-password\>           |
-| SPOTIFY_CLIENT_ID     | \<your-spotify-client-id\>               |
-| SPOTIFY_CLIENT_SECRET | \<your-spotify-client-secret\>           |
-| SPOTIFY_REDIRECT_URI  | often just 'http://localhost/'           |
-| SPOTIFY_USERNAME      | username or email used for Spotify login |
-| OAUTH_CREDS_PATH      | desired path to oauth token              |
+|        Variable          |                   Value                  |
+|:------------------------:|:----------------------------------------:|
+| GMUSIC_USERNAME          | \<your-google-music-username\>           |
+| GMUSIC_PW                | \<your-google-music-password\>           |
+| SPOTIFY_CLIENT_ID        | \<your-spotify-client-id\>               |
+| SPOTIFY_CLIENT_SECRET    | \<your-spotify-client-secret\>           |
+| SPOTIFY_REDIRECT_URI     | often just 'http://localhost/'           |
+| SPOTIFY_USERNAME         | username or email used for Spotify login |
+| GMUSIC_OAUTH_CREDS_PATH  | desired path to oauth token              |
 
 I use a simple script to set these values, aka one .sh file with a lot of
  ```
@@ -43,7 +43,7 @@ source scripts/envSetup.sh
 ### Google Music
 **Run this once, then can use other tests **<br/>
 Gets/stores oauth credentials in path indicated by environment variable 
-OAUTH_CREDS_PATH:
+GMUSIC_OAUTH_CREDS_PATH:
 ```
 source scripts/envSetup.sh
 cd tests/

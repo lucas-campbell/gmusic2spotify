@@ -24,7 +24,7 @@ def onetime_perform_oauth(path, open_browser=False):
 
 def login_to_gmusic_with_oauth():
     gm_api = Mobileclient()
-    creds = os.getenv('OAUTH_CREDS_PATH')
+    creds = os.getenv('GMUSIC_OAUTH_CREDS_PATH')
     device_id = os.getenv('ANDROID_ID')
     if gm_api.oauth_login(device_id, oauth_credentials=creds, locale=u'en_US'):
         return gm_api
