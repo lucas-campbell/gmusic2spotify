@@ -8,8 +8,6 @@ from spotify import *
 def main(argv):
     """ Main driver, use to transfer (at the moment) playlist from GM to SP"""
 
-    
-
 def parse_command_line(argv):
     """
     Parse command line and return a Namespace of the appropriate variables

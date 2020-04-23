@@ -1,2 +1,2 @@
-gmusicapi
-spotipy
+gmusicapi >= 13.0.0
+spotipy >= 2.11.0
