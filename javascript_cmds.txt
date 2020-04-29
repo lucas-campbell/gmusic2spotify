@@ -1,0 +1,29 @@
+var playlist = document.querySelectorAll('.song-table tr.song-row');  
+for(var i =0; i<playlist.length ; i++) {  
+  var l = playlist[i]; 
+  var title = l.querySelectorAll('td[data-col="title"] .content')[0].textContent;
+  var artist = l.querySelectorAll('td[data-col="artist"] .content')[0].textContent;
+  var album = l.querySelectorAll('td[data-col="album"] .content')[0].textContent;
+  console.log(artist + ',' + title + ',' + album); 
+}
+
+/html/body/div[1]/div/paper-drawer-panel/iron-selector/div[1]/paper-header-panel/div/div[1]/div[1]/div[3]/div[2]/div/table/tbody/tr[3]/td[2]/span/text()
+
+var playlist = document.querySelectorAll('.song-table tr.song-row');  
+for(var i =0; i<playlist.length ; i++) {  
+  var l = playlist[i]; 
+  var artist = l.querySelectorAll('td[data-col="title"] .column-content tooltip')[0].text();
+  var artist = l.querySelectorAll('td[data-col="artist"] .column-content tooltip')[0].text();
+  var album = l.querySelectorAll('td[data-col="album"] .column-content tooltip	')[0].text();
+  console.log(artist + ',' + title + ',' + album); 
+}
+
+var playlist = document.querySelectorAll('.song-table tr.song-row');  
+for(var i =0; i<playlist.length ; i++) {  
+  var l = playlist[i]; 
+  var title_obj = l.querySelectorAll('td[data-col="title"]')[0].querySelectorAll('span[class="column-content tooltip"]')[0];
+  var title = title_obj.text;
+  var artist = l.querySelectorAll('td[data-col="artist"]')[0];
+  var album = l.querySelectorAll('td[data-col="album"]')[0];
+  console.log(artist + ',' + title + ',' + album); 
+}
