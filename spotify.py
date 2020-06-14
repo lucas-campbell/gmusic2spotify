@@ -6,6 +6,8 @@ import pprint
 
 def login_to_spotify(username=None):
     """ 
+    NOTE: prefer use of login2spotify() instead.
+
     Params:
         username: probably the email used to log in to spotify
     Returns: 
@@ -15,7 +17,8 @@ def login_to_spotify(username=None):
         username = os.getenv('SPOTIFY_USERNAME')
     
     scope = 'playlist-read-private ' \
-             'playlist-modify-private playlist-modify-public'
+            'playlist-modify-private ' \
+            'playlist-modify-public'
     SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
     SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
     SPOTIFY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
@@ -38,7 +41,7 @@ def login_to_spotify(username=None):
                                             'for {}'.format(username))
             return None
 
-def login2(username=None):
+def login2spotify(username=None):
     """ 
     Alternative way to authenticate, using oauth2 object. Does same thing as
     regular login method, just here for reference.
@@ -47,11 +50,11 @@ def login2(username=None):
     Returns: 
         The spotify api object created after retrieving oauth token
     """
-    if username is None:
-        username = os.getenv('SPOTIFY_USERNAME')
-    
+
     scope = 'playlist-read-private ' \
-             'playlist-modify-private playlist-modify-public'
+            'playlist-modify-private ' \
+            'playlist-modify-public'
+
     SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
     SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
     SPOTIFY_REDIRECT_URI = os.getenv('SPOTIFY_REDIRECT_URI')
@@ -67,8 +70,7 @@ def login2(username=None):
         return sp
 
     except spotipy.oauth2.SpotifyOauthError:
-        print('Unable to retrieve authorization token ' \
-                                        'for {}'.format(username))
+        print('Unable to retrieve authorization token')
         return None
 
 def new_playlist(sp, playlist):
@@ -88,12 +90,13 @@ def new_playlist(sp, playlist):
     # tbh, so can have title, # of tracks, private/public, etc)
     to_add = playlist.entries
     for t in to_add:
-        search = t.spotify_query2()
+        search = t.spotify_query()
         print("search: %s" % (search))
         results = sp.search(search)
-        pprint.pprint(results)
+        print(len(results["tracks"]["items"]))
+        pprint.pprint(results["tracks"]["items"])
         #print("First result: %s by %s on %s"%(results[]))
-        break
+        #break
 
     # then, for each track:
         # create custom search string of artist, track

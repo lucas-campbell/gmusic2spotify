@@ -1,9 +1,7 @@
 # gmusic2spotify
 
 ## Current State
-12/5/2019
-Unable to move forward because of apparent inconsistencies in Google Music's
-underlying representation of a track
+Waiting for Spotipy issue #503 to be resolved (https://github.com/plamere/spotipy/issues/503)
 
 ## Usage
 Make sure to install gmusic & spotify apis for python:
