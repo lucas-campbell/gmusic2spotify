@@ -7,7 +7,7 @@ from Playlist import Playlist
 
 def main():
     sp_api = spotify.login2spotify()
-    # sp_api = spotify.login_to_spotify()
+    #sp_api = spotify.login_to_spotify()
 
     t1 = Track("Far Away Truths", "Albert Hammond Jr")
     t2 = Track("Reptilia", "The Strokes")

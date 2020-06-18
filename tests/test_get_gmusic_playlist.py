@@ -23,7 +23,9 @@ def main():
                                   if p['name'] == pl_name), None)
             if desired_playlist:
                 print("Found")
-            else: print ("Bad PL name, not found")
+            else:
+                print ("Bad PL name, not found")
+
         except EOFError:
             print("Ok all done")
             break

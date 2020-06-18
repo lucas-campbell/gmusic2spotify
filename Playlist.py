@@ -3,13 +3,14 @@
 from Track import Track
 
 class Playlist:
-    def __init__(self, tracks=[], plTitle = ""):
+    def __init__(self, tracks=[], plTitle = "", public=True):
         self.title = plTitle
         self.length = len(tracks)
         self.entries = []
         if tracks:
             self.add_tracks(tracks)
-    
+        self.is_public = public
+
     def add_track(self, t):
         assert isinstance(t, Track), "Playlist entry must be a Track object"
         self.entries.append(t)

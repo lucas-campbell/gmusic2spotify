@@ -125,3 +125,5 @@ scripts/envSetup
 # Visual Studio Code
 .vscode/
 
+# Temporary fix for Spotify OAuth constructor
+.tokens.cred
