@@ -1,6 +1,7 @@
 current state:
     add_tracks_to_lib not working becasue of a weird json response error. Not
     worth worrying about?
+    Yes, not worth worrying about.
 Next:
     1. attempt to build a list of track objects from playlist, make sure that has
         the same length as the storeIds list. 
@@ -9,6 +10,16 @@ Next:
             there exists an exact match.
         b. Log success & failure (num tracks succeeded, name of tracks that
             didnt)
+
+TODO: log success and failure explicitly, plus change interface of new_playlist
+to include an interactive=True param, so user can optionally manually choose
+from list of the search results. Aka if doesn't work the first time, retry
+again with spotify_query2 (without the album this time, for example, or maybe
+just without quotes) and then have the user select from 0-9/confirm from a
+list of search options & make sure to add that track in the same spot in the
+playlist somehow (using the 'position' parameter in spotipy.user_add_tracks, or
+saving the list of ids_to_add until everything is finalized)
+
 
 Future:
     1. Have multiple Track object constructor options: one for each music

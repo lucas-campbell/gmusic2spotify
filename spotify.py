@@ -100,7 +100,11 @@ def new_playlist(sp, playlist):
 
     to_add = playlist.entries
     song_ids = []
+    # list of indices in song_ids list that will hold search queries for songs
+    # that failed
+    missing = [] 
     count = 0
+    i = 0
     for t in to_add:
         # create custom search string of artist, track
         search = t.spotify_query()
@@ -114,17 +118,27 @@ def new_playlist(sp, playlist):
             song_ids.append(song_id_to_add)
             count += 1
         else:
+            song_ids.append(search)
+            missing.append(i)
             #TODO error reporting
             pass
+        i += 1
 
-    sp.user_playlist_add_tracks(user_id, new_pl_id, song_ids)
+    if len(missing) > 0:
+        for m in missing:
+            song_ids[m]
+        pass
+    else:
+        sp.user_playlist_add_tracks(user_id, new_pl_id, song_ids)
+        print("Successfully transfered all songs to new playlist '",
+                playlist.title, "'. You're all set!")
 
     # TODO some kind of confirmation? plus report of errors/not found tracks
     print('Sucessfully added ', count, ' songs to spotify playlist')
 
 def convert_playlist(title):
     """
-    TODO later on, if want to send playlist frm Spotify --> elsewhere
+    TODO later on, if want to send playlist from Spotify --> elsewhere
     param [title] the title of a playlist
     returns a dictionary of the tracks of that playlist
     """
