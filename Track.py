@@ -19,5 +19,10 @@ class Track:
         return query
     
     def spotify_query2(self):
-        query = self.title
+        query = 'track:{} artist:{}'.format(self.title, self.artist)
+        if self.album != "":
+            query += ' album:{}'.format(self.album)
+        return query
+    def spotify_query3(self):
+        query = '{} {}'.format(self.title, self.artist)
         return query

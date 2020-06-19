@@ -1,19 +1,20 @@
-import sys
-sys.path.append('../')
 import gmusic
 import spotify
 from Track import *
 from Playlist import *
+from os import getenv
 
 def main():
 
     # Google Music MobileClient api
     gm_api = gmusic.login_to_gmusic_with_oauth()
+    print('Logged in to Google music using ',  getenv('GMUSIC_OAUTH_CREDS_PATH'))
     all_songs = gm_api.get_all_user_playlist_contents()
 
     # Spotify api
     sp_api = spotify.login2spotify()
     user = sp_api.me()
+    print('Logged in to spotify as ', user['display_name'])
     sp_user_id = user['id']
 
     found = False
@@ -58,7 +59,7 @@ def main():
 
     new_playlist = Playlist(tracks=tracks, plTitle=pl_name)
     print('ok, added ', count, ' songs to Playlist object with length ', new_playlist.length)
-    spotify.new_playlist(sp_api, new_playlist)
+    spotify.new_playlist(sp_api, new_playlist, interactive=True)
 
 
 if __name__ == "__main__":
